@@ -8,7 +8,7 @@ using namespace std;
 void printPuzzle(struct Puzzle puz);
 
 int main(){
-	cout << "Main" << endl;
+	//cout << "Main" << endl;
 	
 	Puzzle Rubiks;
 	Puzzle Zanchi;
