@@ -32,22 +32,14 @@ class Box {
 // Initialize static member of class Box
 int Box::objectCount = 0;
 
-int main(void) {
-  
-  Start:
+int main(void) {i
    // Print total number of objects before creating object.
    cout << "Inital Stage Count: " << Box::getCount() << endl;
 
    Box Box1(3.3, 1.2, 1.5);    // Declare box1
    Box Box2(8.5, 6.0, 2.0);    // Declare box2
-
-Middle:
-
    // Print total number of objects after creating object.
    cout << "Final Stage Count: " << Box::getCount() << endl;
-   goto Middle;
-
-   End:
 
    return 0;
 }
