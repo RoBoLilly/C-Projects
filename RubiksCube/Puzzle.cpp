@@ -31,3 +31,6 @@ int Puzzle::getQuality() {
 int Puzzle::getPuzzle_id(){
 	return puzzle_id;
 }
+int Puzzle::getCount(){
+	return puzzleCount;
+}

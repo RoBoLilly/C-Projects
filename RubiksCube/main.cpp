@@ -6,6 +6,7 @@
 using namespace std;
 
 void printPuzzle(struct Puzzle puz);
+int Puzzle::puzzleCount = 0;
 
 int main(){
 	//cout << "Main" << endl;
@@ -13,6 +14,18 @@ int main(){
 	Puzzle Rubiks;
 	Puzzle Zanchi;
 	Puzzle Vcube;
+	Puzzle GhostCube;
+	Puzzle CurvyCopter;
+
+	GhostCube.setName("GhostCube");
+	GhostCube.setType("Scramble");
+	GhostCube.setSize("3x3");
+	GhostCube.setQuality(10);
+
+	CurvyCopter.setName("CurvyCopter");
+	CurvyCopter.setType("Edge-Turing");
+	CurvyCopter.setSize("54mm");
+	CurvyCopter.setQuality(8);
 	
 	Rubiks.setName("Rubiks");
 	Rubiks.setType("Basic");
@@ -30,7 +43,7 @@ int main(){
 	Vcube.setQuality(2);
 	
 	cout << "Puzzle Database V.0.4" << endl;
-	cout << "There are " << 3 << " Puzzles recorded." << endl 
+	cout << "There are " << Puzzle::getCount() << " Puzzles recorded." << endl 
 	<< "Enter desired entry name or Puzzle ID: ";
 	string j;
 	cin  >> j;
@@ -42,6 +55,12 @@ int main(){
 		printPuzzle(Zanchi);
 	}
 	if (j == Vcube.getName()|| j == "3"){
+		printPuzzle(Vcube);
+	}
+	if (j == CurvyCopter.getName()|| j == "4"){
+		printPuzzle(Zanchi);
+	}
+	if (j == GhostCube.getName()|| j == "5"){
 		printPuzzle(Vcube);
 	}
 	//cout << j << endl;
