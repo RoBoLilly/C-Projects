@@ -6,7 +6,9 @@ void printGrid(int grid[9][9]);
 int blockSum(int grid[9][9], int Block);
 int rowSum(int grid[9][9], int Row);
 int columnSum(int grid[9][9], int Column);
+int usedNum(int grid[9][9], int x, int y, int outUsedNum[]);
 
+int clueMap[9][9];
 int grid[9][9] = {
     {2, 0, 0, 8, 0, 4, 0, 0, 6},
     {0, 0, 6, 0, 0, 0, 5, 0, 0},
@@ -21,10 +23,43 @@ int grid[9][9] = {
 
 int main(){
     cout << "Sudoku" << endl;
+    for(int a=0;a<9;a++){           // Creates ClueMap
+        for(int b=0;b<9;b++){
+            if(grid[a][b] > 0){
+                clueMap[a][b] = 1;
+            }else{
+                clueMap[a][b] = 0;
+            }
+        }
+    }
+    
     printGrid(grid);
-    cout << blockSum(grid, 3) << endl;
+
+    //printGrid(clueMap);
+    int usedNum[27];
+    int i = 0;
+    for(int a=0;a<9;a++){
+        if(grid[0][a]>0){
+            usedNum[i] = grid[0][a];
+            i++;
+        }
+    }
+    for(int b=0;b<9;b++){
+        if(grid[b][0]>0){
+            usedNum[i] = grid[b][0];
+            i++;
+        }
+    }
+    i = 0;
+    for(int k=0;k<27;k++){
+        cout << usedNum[k] <<  ", " << endl;
+    }
 
     cout <<endl;
+    return 0;
+}
+
+int usedNum(int grid[9][9], int x, int y, int outUsedNum[27]){
     return 0;
 }
 
