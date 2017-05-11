@@ -1,15 +1,21 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 void printGrid(int grid[9][9]);
-//int blockSum(int grid[9][9], int BlockX, int BlockY);
-int blockSum(int grid[9][9], int Block);
-int rowSum(int grid[9][9], int Row);
-int columnSum(int grid[9][9], int Column);
-int usedNum(int grid[9][9], int x, int y, int outUsedNum[]);
+void createMap();
+int blockSum(struct grid[9][9], int Block);
+int rowSum(struct grid[9][9], int Row);
+int columnSum(struct grid[9][9], int Column);
 
-int clueMap[9][9];
-int grid[9][9] = {
+
+struct playfield{
+    int number;
+    int clueMap;
+    int guessMap[9];
+} grid[9][9];
+
+int inputGrid[9][9] = {
     {2, 0, 0, 8, 0, 4, 0, 0, 6},
     {0, 0, 6, 0, 0, 0, 5, 0, 0},
     {0, 7, 4, 0, 0, 0, 9, 2, 0},
@@ -22,66 +28,25 @@ int grid[9][9] = {
 };
 
 int main(){
+
+    grid[0][0].guessMap[0] = 12;
+    grid[0][0].guessMap[1] = 34;
+
+    cout << grid[0][0].number << endl;
+    cout << grid[0][0].guessMap[0] << endl;
     cout << "Sudoku" << endl;
-    for(int a=0;a<9;a++){           // Creates ClueMap
-        for(int b=0;b<9;b++){
-            if(grid[a][b] > 0){
-                clueMap[a][b] = 1;
-            }else{
-                clueMap[a][b] = 0;
-            }
-        }
-    }
-    
-    printGrid(grid);
 
+    createMap();
+
+    cout << grid[0][0].number << endl;
+    printGrid(grid[][].numbers);
     //printGrid(clueMap);
-    int usedNum[27];
-    int i = 0;
-    for(int a=0;a<9;a++){
-        if(grid[0][a]>0){
-            usedNum[i] = grid[0][a];
-            i++;
-        }
-    }
-    for(int b=0;b<9;b++){
-        if(grid[b][0]>0){
-            usedNum[i] = grid[b][0];
-            i++;
-        }
-    }
-    i = 0;
-    for(int k=0;k<27;k++){
-        cout << usedNum[k] <<  ", " << endl;
-    }
 
-    cout <<endl;
-    return 0;
+    cout << endl;
 }
 
-int usedNum(int grid[9][9], int x, int y, int outUsedNum[27]){
-    return 0;
-}
 
-/*
-int blockSum(int grid[9][9], int BlockX, int BlockY){
-    if(BlockX > 2){
-        BlockX = 2;
-    }
-    if(BlockY > 2){
-        BlockY = 2;
-    }
-    int i = 0;
-    for(int a=0;a<3;a++){
-        for(int b=0;b<3;b++){
-            i += grid[a+(BlockY*3)][b+(BlockX*3)];
-            //cout << grid[a+(BlockY*3)][b+(BlockX*3)] << endl;
-        }
-    }
-    return i;
-} */
-
-int blockSum(int grid[9][9], int Block){
+int blockSum(struct grid[9][9], int Block){
     int BlockX;
     int BlockY;
     switch(Block){
@@ -126,29 +91,42 @@ int blockSum(int grid[9][9], int Block){
     int i = 0;
     for(int a=0;a<3;a++){
         for(int b=0;b<3;b++){
-            i += grid[a+(BlockY*3)][b+(BlockX*3)];
+            i += grid[a+(BlockY*3)][b+(BlockX*3)].number;
         }
     }
     return i;
 }
 
-int rowSum(int grid[9][9], int Row){
+void createMap(){
+    for(int a=0;a<9;a++){           // Creates ClueMap
+        for(int b=0;b<9;b++){
+            grid[a][b].number = inputGrid[a][b];
+            if(grid[a][b].number > 0){
+                grid[a][b].clueMap = 1;
+            }else{
+                grid[a][b].clueMap = 0;
+            }
+        }
+    }
+}
+
+int rowSum(struct grid[9][9], int Row){
     int i = 0;
     for(int a=0;a<9;a++){
-        i += grid[Row][a];
+        i += grid[Row][a].number;
     }
     return i;
 }
 
-int columnSum(int grid[9][9], int Column){
+int columnSum(struct grid[9][9], int Column){
     int i = 0;
     for(int a=0;a<9;a++){
-        i += grid[a][Column];
+        i += grid[a][Column].number;
     }
     return i;
 }
 
-void printGrid(int grid[9][9]){
+void printGrid(struct grid[9][9]){
     cout << "-------------------------------" << endl;
     for(int a=0;a<9;a++){
         static int i = 0;
@@ -160,10 +138,10 @@ void printGrid(int grid[9][9]){
             if(b == 3||b==6){
                 cout << "|";
             }
-            if(grid[a][b] == 0){
+            if(grid[a][b].number == 0){
                 cout << "   ";
             }else{
-                cout << " " << grid[a][b] << " ";
+                cout << " " << grid[a][b].number << " ";
             }
             
         }
