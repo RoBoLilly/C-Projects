@@ -5,11 +5,18 @@ class player {
         int location[2];
         int inventory[10];
         int inventorySize;
+        int invertControls;
     public:
-        int getLocation(int i);
         void setLocation(int i, int coord);
-        int getInventory(int i);
+        int getLocation(int i);
+        void moveForward();
+        void moveBackward();
+        void moveLeft();
+        void moveRight();
         void setInventory(int i, int j);
-        int getInventorySize();
+        int getInventory(int i);
         void setInventorySize(int i);
+        int getInventorySize();
+        void setInvertControls(int i);
+        int getInvertControls();
 };

@@ -4,10 +4,11 @@
 int map::gridValue(int i, int j){
     return grid[i][j];
 }
-void map::setGridValue(int i, int j, int k){
+void map::setGridValueNoSave(int i, int j, int k){
     grid[i][j] = k;
 }
-void map::saveGridValue(int i, int j, int k){
+void map::setGridValue(int i, int j, int k){
+    grid[i][j] = k;
     switch(getLoadedGrid(1)){
         case 0:
             switch(getLoadedGrid(0)){

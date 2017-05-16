@@ -6,8 +6,8 @@ class map {
     int loadedMap[2];
     public:
     int gridValue(int i, int j);
+    void setGridValueNoSave(int i, int j, int k);
     void setGridValue(int i, int j, int k);
-    void saveGridValue(int i, int j, int k);
     void setLoadedGrid(int i, int j);
     int getLoadedGrid(int i);
     void loadGrid(int loadGrid[][12]);

@@ -1,13 +1,14 @@
 #include <iostream>
-#include "colors.cpp"
-#include "player.h"
+#include "colors.cpp" // has color IDs
 #include "map.h"
-
+#include "player.h"
+#include "enemy.h"
 using namespace std;
 
-int printDirections = false;
+int printDirections = false; // tells askCommand to list possible actions 
 
 char command;
+int meta;
 
 void askCommand(player player, map map);
 void printGrid(player player, map map);
@@ -18,139 +19,96 @@ int main(){
     system("clear");
     map map1;
     player player1;
-    map1.setLoadedGrid(0, 0);
-    player1.setLocation(0, 7);
-    player1.setLocation(1, 4);
 
-    int isOverReversePoint = 0;
+    map1.setLoadedGrid(0, 0); // Loads first grid
+    player1.setLocation(0, 7); //Y // Places player1 on grid
+    player1.setLocation(1, 4); //X
+
     while (command != 'Q'){
         cout << BLUE << "Moosh" << GREEN << "Vr.2" << RESET << endl;
-        //cout << "[" << map1.getLoadedGrid(0) << ", " << map1.getLoadedGrid(1) << "]" <<endl;
-        cout << YELLOW << "[";
+        //cout << "[" << map1.getLoadedGrid(0) << ", " << map1.getLoadedGrid(1) << "]" <<endl; // Prints current loaded grid
+        cout << YELLOW << "["; // Prints Inventory
         for(int inv=0;inv<10;inv++){
-            if (player1.getInventory(inv) == 1)
-            {
-                cout << "ß ";
-            }
+            if (player1.getInventory(inv) == 1){cout << "ß ";}
         }
         cout << "]" << RESET;
-        askCommand(player1, map1);
-        printGrid(player1, map1);
-        system ("/bin/stty raw");
+        askCommand(player1, map1); // This is what prints the little hints 
+        printGrid(player1, map1); // This is what prints the Grid. Duh...
+        system ("/bin/stty raw"); // allows for single key press
         cin >> command;
         system ("/bin/stty cooked");
-        if(map1.gridValue(player1.getLocation(0), player1.getLocation(1))==6){
-            isOverReversePoint = 1;
-        }else{isOverReversePoint = 0;}
+
+        if(map1.gridValue(player1.getLocation(0), player1.getLocation(1))==6){ // checks if controls should be inverted
+            player1.setInvertControls(1);
+        }else{player1.setInvertControls(0);}
+
         if (command == 'w')
         {
-            if(!isOverReversePoint){
-                if (isPermeable(player1.getLocation(0) - 1, player1.getLocation(1), map1)){
-                    player1.setLocation(0, player1.getLocation(0) - 1);
-                }
-            }else{
-                if (isPermeable(player1.getLocation(0) + 1, player1.getLocation(1), map1)){
-                    player1.setLocation(0, player1.getLocation(0) + 1);
-                }
+            if (isPermeable(player1.getLocation(0) - 1, player1.getLocation(1), map1)){
+                player1.moveForward();
             }
         }
         if (command == 's')
         {
-            if(!isOverReversePoint){
-                if (isPermeable(player1.getLocation(0) + 1, player1.getLocation(1), map1)){
-                    player1.setLocation(0, player1.getLocation(0) + 1);
-                }
-            }else{
-                if (isPermeable(player1.getLocation(0) - 1, player1.getLocation(1), map1)){
-                    player1.setLocation(0, player1.getLocation(0) - 1);
-                }
+            if (isPermeable(player1.getLocation(0) + 1, player1.getLocation(1), map1)){
+                player1.moveBackward();
             }
         }
         if (command == 'a')
         {
-            if(!isOverReversePoint){
-                if (isPermeable(player1.getLocation(0), player1.getLocation(1) - 1, map1)){
-                    player1.setLocation(1, player1.getLocation(1) - 1);
-                }
-            }else{
-                if (isPermeable(player1.getLocation(0), player1.getLocation(1) + 1, map1)){
-                    player1.setLocation(1, player1.getLocation(1) + 1);
-                }
+            if (isPermeable(player1.getLocation(0), player1.getLocation(1) - 1, map1)){
+                player1.moveLeft();
             }
         }
         if (command == 'd')
         {
-            if(!isOverReversePoint){
-                if (isPermeable(player1.getLocation(0), player1.getLocation(1) + 1, map1)){
-                    player1.setLocation(1, player1.getLocation(1) + 1);
-                    isOverReversePoint = 0;
-                }
-            }else{
-                if (isPermeable(player1.getLocation(0), player1.getLocation(1) - 1, map1)){
-                    player1.setLocation(1, player1.getLocation(1) - 1);
-                    isOverReversePoint = 0;
-                }
+            if (isPermeable(player1.getLocation(0), player1.getLocation(1) + 1, map1)){
+                player1.moveRight();
             }
         }
         if (command == 'e')
         {
-            if (map1.gridValue(player1.getLocation(0), player1.getLocation(1)) == 2) // if over key pickup key
-            {
+            if (map1.gridValue(player1.getLocation(0), player1.getLocation(1)) == 2) // Pickup Key and add to inventory
+            { 
                 map1.setGridValue(player1.getLocation(0), player1.getLocation(1), 1);
-                map1.saveGridValue(player1.getLocation(0), player1.getLocation(1), 1);
-                
                 player1.setInventory(player1.getInventorySize(), 1);
                 player1.setInventorySize(player1.getInventorySize()+1);
             }
-            if(player1.getInventory(0)==1){
-                if(checkAroundFor(player1, map1, 3)){
-                    if (checkAroundFor(player1, map1, 3) == 2)
-                    {
+            if(player1.getInventory(0)==1){ // Unlock door and remove key from inventory
+                meta = checkAroundFor(player1, map1, 3);
+                if(meta){
+                    if (meta == 2){
                         map1.setGridValue(player1.getLocation(0) + 1, player1.getLocation(1), 4);
-                        map1.saveGridValue(player1.getLocation(0) + 1, player1.getLocation(1), 4);
                     }
-                    if (checkAroundFor(player1, map1, 3) == 3)
-                    {
+                    if (meta == 3){
                         map1.setGridValue(player1.getLocation(0) - 1, player1.getLocation(1), 4);
-                        map1.saveGridValue(player1.getLocation(0) - 1, player1.getLocation(1), 4);
                     }
-                    if (checkAroundFor(player1, map1, 3) == 4)
-                    {
+                    if (meta == 4){
                         map1.setGridValue(player1.getLocation(0), player1.getLocation(1) + 1, 4);
-                        map1.saveGridValue(player1.getLocation(0), player1.getLocation(1) + 1, 4);
                     }
-                    if (checkAroundFor(player1, map1, 3) == 5)
-                    {
+                    if (meta == 5){
                         map1.setGridValue(player1.getLocation(0), player1.getLocation(1) - 1, 4);
-                        map1.saveGridValue(player1.getLocation(0), player1.getLocation(1)- 1, 4);
                     }
                     player1.setInventory(player1.getInventorySize()-1, 0);
                     player1.setInventorySize(player1.getInventorySize()-1);
                 }
             }
-            if(player1.getInventory(0)==1 &&
+            if(player1.getInventory(0)==1 && // Unlock Big Door and remove 3 keys from inventory
                 player1.getInventory(1)==1 &&
                 player1.getInventory(2)==1){
-                if(checkAroundFor(player1, map1, 7)){
-                    if (checkAroundFor(player1, map1, 7) == 2)
-                    {
+                meta = checkAroundFor(player1, map1, 7);
+                if(meta){
+                    if (meta == 2){
                         map1.setGridValue(player1.getLocation(0) + 1, player1.getLocation(1), 4);
-                        map1.saveGridValue(player1.getLocation(0) + 1, player1.getLocation(1), 4);
                     }
-                    if (checkAroundFor(player1, map1, 7) == 3)
-                    {
+                    if (meta == 3){
                         map1.setGridValue(player1.getLocation(0) - 1, player1.getLocation(1), 4);
-                        map1.saveGridValue(player1.getLocation(0) - 1, player1.getLocation(1), 4);
                     }
-                    if (checkAroundFor(player1, map1, 7) == 4)
-                    {
+                    if (meta == 4){
                         map1.setGridValue(player1.getLocation(0), player1.getLocation(1) + 1, 4);
-                        map1.saveGridValue(player1.getLocation(0), player1.getLocation(1) + 1, 4);
                     }
-                    if (checkAroundFor(player1, map1, 7) == 5)
-                    {
+                    if (meta == 5){
                         map1.setGridValue(player1.getLocation(0), player1.getLocation(1) - 1, 4);
-                        map1.saveGridValue(player1.getLocation(0), player1.getLocation(1)- 1, 4);
                     }
                     player1.setInventory(player1.getInventorySize()-1, 0);
                     player1.setInventorySize(player1.getInventorySize()-1);
@@ -161,7 +119,9 @@ int main(){
                 }
             }
         }
+        // If player is over the edge of the grid
         if(map1.gridValue(player1.getLocation(0), player1.getLocation(1))== -1){
+            // Teleport player to oposing side and load grid from the same side the player telported from
             if(player1.getLocation(0) == 0){
                 map1.loadForwardGrid();
                 player1.setLocation(0, 10);
@@ -188,54 +148,24 @@ int main(){
         }
     }
 }
-void printGrid(player player, map map)
-{
-    for (int a = 1; a < 11; a++)
-    {
-        for (int b = 1; b < 11; b++)
-        {
+void printGrid(player player, map map){
+    for (int a = 1; a < 11; a++){
+        for (int b = 1; b < 11; b++){
             if (a == player.getLocation(0) && b == player.getLocation(1))
             {
                 cout << MAGENTA << "X" << RESET;
             }
             else
             {
-                if (map.gridValue(a, b) == -1)
-                {
-                    cout << MAGENTA << "Z" << RESET;
-                }
-                if (map.gridValue(a, b) == 0)
-                {
-                    cout << RED << "#" << RESET;
-                }
-                if (map.gridValue(a, b) == 1)
-                {
-                    cout << GREEN << "0" << RESET;
-                }
-                if (map.gridValue(a, b) == 2)
-                {
-                    cout << YELLOW << "ß" << RESET;
-                }
-                if (map.gridValue(a, b) == 3)
-                {
-                    cout << RED << "∆" << RESET;
-                }
-                if (map.gridValue(a, b) == 4)
-                {
-                    cout << GREEN << "∆" << RESET;
-                }
-                if (map.gridValue(a, b) == 5)
-                {
-                    cout << CYAN << "◊" << RESET;
-                }
-                if (map.gridValue(a, b) == 6 )
-                {
-                    cout << GREEN << "8" << RESET;
-                }
-                if (map.gridValue(a, b) == 7 )
-                {
-                    cout << CYAN << "∆" << RESET;
-                }
+                if (map.gridValue(a, b) ==-1){cout << MAGENTA << "Z" << RESET;}
+                if (map.gridValue(a, b) == 0){cout << RED << "#" << RESET;}
+                if (map.gridValue(a, b) == 1){cout << GREEN << "0" << RESET;}
+                if (map.gridValue(a, b) == 2){cout << YELLOW << "ß" << RESET;}
+                if (map.gridValue(a, b) == 3){cout << RED << "∆" << RESET;}
+                if (map.gridValue(a, b) == 4){cout << GREEN << "∆" << RESET;}
+                if (map.gridValue(a, b) == 5){cout << CYAN << "◊" << RESET;}
+                if (map.gridValue(a, b) == 6 ){cout << GREEN << "8" << RESET;}
+                if (map.gridValue(a, b) == 7 ){cout << CYAN << "∆" << RESET;}
             }
             cout << " ";
         }
@@ -243,25 +173,12 @@ void printGrid(player player, map map)
     }
 }
 
-void askCommand(player player, map map)
-{
+void askCommand(player player, map map){
     if(printDirections){
-        if(map.gridValue(player.getLocation(0) - 1, player.getLocation(1))==1)
-        {
-            cout << "Forward, ";
-        }
-        if(map.gridValue(player.getLocation(0), player.getLocation(1) - 1)==1)
-        {
-            cout << "Left, ";
-        }
-        if(map.gridValue(player.getLocation(0), player.getLocation(1) + 1)==1)
-        {
-            cout << "Right, ";
-        }
-        if(map.gridValue(player.getLocation(0) + 1, player.getLocation(1))==1)
-        {
-            cout << "Backward, ";
-        }
+        if(map.gridValue(player.getLocation(0) - 1, player.getLocation(1))==1){cout << "Forward, ";}
+        if(map.gridValue(player.getLocation(0) + 1, player.getLocation(1))==1){cout << "Backward, ";}
+        if(map.gridValue(player.getLocation(0), player.getLocation(1) - 1)==1){cout << "Left, ";}
+        if(map.gridValue(player.getLocation(0), player.getLocation(1) + 1)==1){cout << "Right, ";}
     }
     if(map.gridValue(player.getLocation(0), player.getLocation(1)) == 2){
         cout << YELLOW <<"Pick up Key with e" << RESET;
@@ -289,67 +206,26 @@ void askCommand(player player, map map)
 }
 int isPermeable(int i, int j, map map)
 {
-    if (map.gridValue(i, j) == -1)
-    {
-        return 1;
-    }
-    else if (map.gridValue(i, j) == 0)
-    {
-        return 0;
-    }
-    else if (map.gridValue(i, j) == 1)
-    {
-        return 1;
-    }
-    else if (map.gridValue(i, j) == 2)
-    {
-        return 1;
-    }
-    else if (map.gridValue(i, j) == 3)
-    {
-        return 0;
-    }
-    else if (map.gridValue(i, j) == 4)
-    {
-        return 1;
-    }
-    else if (map.gridValue(i, j) == 5)
-    {
-        return 1;
-    }
-    else if (map.gridValue(i, j) == 6)
-    {
-        return 1;
-    }
-    else
-    {
+    if (map.gridValue(i, j) == -1){return 1;}
+    else if (map.gridValue(i, j) == 0){return 0;}
+    else if (map.gridValue(i, j) == 1){return 1;}
+    else if (map.gridValue(i, j) == 2){return 1;}
+    else if (map.gridValue(i, j) == 3){return 0;}
+    else if (map.gridValue(i, j) == 4){return 1;}
+    else if (map.gridValue(i, j) == 5){return 1;}
+    else if (map.gridValue(i, j) == 6){return 1;}
+    else if (map.gridValue(i, j) == 7){return 0;}
+    else{
         return 0;
     }
 }
-int checkAroundFor(player player, map map, int i)
-{
-    if (map.gridValue(player.getLocation(0), player.getLocation(1)) == i)
-    {
-        return 1;
-    }
-    else if (map.gridValue(player.getLocation(0) + 1, player.getLocation(1)) == i)
-    {
-        return 2;
-    }
-    else if (map.gridValue(player.getLocation(0) - 1, player.getLocation(1)) == i)
-    {
-        return 3;
-    }
-    else if (map.gridValue(player.getLocation(0), player.getLocation(1) + 1) == i)
-    {
-        return 4;
-    }
-    else if (map.gridValue(player.getLocation(0), player.getLocation(1) - 1) == i)
-    {
-        return 5;
-    }
-    else
-    {
+int checkAroundFor(player player, map map, int i){
+    if(map.gridValue(player.getLocation(0), player.getLocation(1)) == i){return 1;}
+    else if (map.gridValue(player.getLocation(0) + 1, player.getLocation(1)) == i){return 2;}
+    else if (map.gridValue(player.getLocation(0) - 1, player.getLocation(1)) == i){return 3;}
+    else if (map.gridValue(player.getLocation(0), player.getLocation(1) + 1) == i){return 4;}
+    else if (map.gridValue(player.getLocation(0), player.getLocation(1) - 1) == i){return 5;}
+    else{
         return 0;
     }
 }
