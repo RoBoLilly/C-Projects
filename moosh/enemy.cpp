@@ -1,10 +1,10 @@
 #include "enemy.h"
 
-int enemy::getLocation(int i){
-    return location[i];
-}
 void enemy::setLocation(int i, int j){
     location[i] = j;
+}
+int enemy::getLocation(int i){
+    return location[i];
 }
 int enemy::getMapLocation(int i){
     return mapLocation[i];
