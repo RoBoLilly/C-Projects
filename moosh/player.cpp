@@ -1,3 +1,4 @@
+#include "map.h"
 #include "player.h"
 
 void player::setLocation(int i, int coord){
@@ -24,15 +25,47 @@ void player::setInvertControls(int i){
 int player::getInvertControls(){
     return invertControls;
 }
-void player::moveForward(){
-    setLocation(0, getLocation(0) - 1);
+void player::moveForward(map &map){
+    if(!getInvertControls()){
+        if (map.isPermeable(getLocation(0) - 1, getLocation(1))){
+            setLocation(0, getLocation(0) - 1); // Move Forward
+        }
+    }else{
+        if (map.isPermeable(getLocation(0) + 1, getLocation(1))){
+            setLocation(0, getLocation(0) + 1); // Move Backward
+        }
+    }
 }
-void player::moveBackward(){
-    setLocation(0, getLocation(0) + 1);
+void player::moveBackward(map &map){
+    if(!getInvertControls()){
+        if (map.isPermeable(getLocation(0) + 1, getLocation(1))){
+            setLocation(0, getLocation(0) + 1); // Move Backward
+        }
+    }else{
+        if (map.isPermeable(getLocation(0) - 1, getLocation(1))){
+            setLocation(0, getLocation(0) - 1); // Move Forward
+        }
+    }
 }
-void player::moveLeft(){
-    setLocation(1, getLocation(1) - 1);
+void player::moveLeft(map &map){
+    if(!getInvertControls()){
+        if (map.isPermeable(getLocation(0), getLocation(1) - 1)){
+            setLocation(1, getLocation(1) - 1);
+        }
+    }else{
+        if (map.isPermeable(getLocation(0), getLocation(1) + 1)){
+            setLocation(1, getLocation(1) + 1);
+        }
+    }
 }
-void player::moveRight(){
-    setLocation(1, getLocation(1) + 1);
+void player::moveRight(map &map){
+    if(!getInvertControls()){
+        if (map.isPermeable(getLocation(0), getLocation(1) + 1)){
+            setLocation(1, getLocation(1) + 1);
+        }
+    }else{
+        if (map.isPermeable(getLocation(0), getLocation(1) - 1)){
+            setLocation(1, getLocation(1) - 1);
+        }
+    }
 }

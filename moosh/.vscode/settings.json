@@ -1,7 +1,12 @@
 {
     "files.associations": {
-        "locale": "cpp",
-        "ostream": "cpp",
-        "iostream": "cpp"
+        "exception": "cpp",
+        "memory": "cpp",
+        "new": "cpp",
+        "stdexcept": "cpp",
+        "typeinfo": "cpp",
+        "algorithm": "cpp",
+        "__locale": "cpp",
+        "atomic": "cpp"
     }
 }

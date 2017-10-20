@@ -1,0 +1,6 @@
+res,R0,200;
+res,R1;
+PosN 12
+GND -> R0
+R0 -> R1
+R1 -> PosN

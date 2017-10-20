@@ -12,6 +12,13 @@ class enemy {
     void setMapLocation(int i, int j);
     int getAIstate();
     void setAIstate(int i);
-    void set();
+    void moveForward();
+    void moveBackward();
+    void moveLeft();
+    void moveRight();
+    int attackForward();
+    int attackBackward();
+    int attackLeft();
+    int attackRight();
 
 };
