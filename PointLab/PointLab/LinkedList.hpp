@@ -12,24 +12,86 @@
 #include <stdio.h>
 #include "Partical.hpp"
 
+template <typename type>
 struct Node {
     Node* next = nullptr;
     Node* prev = nullptr;
-    Partical partical;
+    type data;
 };
 
+template <typename type>
 class LinkedList {
 private:
     int IDcounter;
 public:
-    Node* head;
-    Node* tail;
-    LinkedList();
-    void insertFront(Partical p);
-    void insertBack(Partical p);
-    void deleteFront();
-    void deleteBack();
-    void cleanUp();
+    Node<type>* head;
+    Node<type>* tail;
+    LinkedList(){
+        head = nullptr;
+        tail = nullptr;
+    }
+    
+    template <typename T>
+    void insertFront(T data)
+    {
+        Node<type> *temp=new Node<type>;
+        temp->partical = data;
+        temp->partical.ID = IDcounter;
+        IDcounter++;
+        temp->prev = nullptr;
+        if(tail == nullptr)
+        {
+            head=temp;
+            tail=temp;
+            temp=nullptr;
+        }
+        else
+        {
+            head->next=temp;
+            head=temp;
+        }
+    };
+    
+    template <typename T>
+    void insertBack(T data)
+    {
+        Node<type> *temp=new Node<type>;
+        temp->partical = data;
+        temp->partical.ID = IDcounter;
+        IDcounter++;
+        temp->next = nullptr;
+        if(head == nullptr)
+        {
+            head=temp;
+            tail=temp;
+            temp=nullptr;
+        }
+        else
+        {
+            tail->next=temp;
+            tail=temp;
+        }
+    };
+    void deleteFront()
+    {
+        Node<type> *temp=new Node<type>;
+        temp=head;
+        head=head->next;
+        delete temp;
+    }
+    void deleteBack()
+    {
+        Node<type> *temp=new Node<type>;
+        temp=tail;
+        tail=tail->next;
+        delete temp;
+    }
+    void cleanUp()
+    {
+        while(head != nullptr) {
+            deleteFront();
+        }
+    }
 };
 
 #endif /* LinkedList_hpp */

@@ -35,7 +35,7 @@ int main(int argc, const char * argv[]) {
     PixelBuffer pixelBuffer(pI);
     
     Field field(windowSize);
-    LinkedList ll;
+    LinkedList<Partical> ll;
     pI.particalList = &ll;
     Partical root1(particalTexture, Point2f(1080/2, 720/2));
     Circal circal1(pI, root1.getPos(), 100);
@@ -94,19 +94,19 @@ int main(int argc, const char * argv[]) {
                         window.close();
                     }
                     if (e.key.code == sf::Keyboard::K) {
-                        for(Node* n = ll.head; n != nullptr; n = n->next){
-                            field.addAttraction(n->partical, ll);
+                        for(Node<Partical>* n = ll.head; n != nullptr; n = n->next){
+                            field.addAttraction(n->data, ll);
                         }
                     }
                     if (e.key.code == sf::Keyboard::B) {
-                        for(Node* n = ll.head; n != nullptr; n = n->next){
-                            n->partical.setAttractiveR(n->partical.getAttractiveR() + 5);
+                        for(Node<Partical>* n = ll.head; n != nullptr; n = n->next){
+                            n->data.setAttractiveR(n->data.getAttractiveR() + 5);
                         }
                     }
                     if (e.key.code == sf::Keyboard::R) {
-                        for(Node* n = ll.head; n != nullptr; n = n->next){
-                            n->partical.setMoment(Point2f(1+rand()&100, 1+rand()&100));
-                            n->partical.setMoment(Point2f(10/n->partical.getMomemt().x, 10/n->partical.getMomemt().y));
+                        for(Node<Partical>* n = ll.head; n != nullptr; n = n->next){
+                            n->data.setMoment(Point2f(1+rand()&100, 1+rand()&100));
+                            n->data.setMoment(Point2f(10/n->data.getMomemt().x, 10/n->data.getMomemt().y));
                         }
                     }
                 } break;
@@ -115,10 +115,10 @@ int main(int argc, const char * argv[]) {
             }
         }
         window.clear(sf::Color::Black);
-        for(Node* n = ll.head; n != nullptr; n = n->next){
-            n->partical.draw(window);
-            n->partical.iterate();
-            field.bounderyCheck(n->partical);
+        for(Node<Partical>* n = ll.head; n != nullptr; n = n->next){
+            n->data.draw(window);
+            n->data.iterate();
+            field.bounderyCheck(n->data);
         }
         circal1.draw();
 //        rider1.setPos(circal1.getPointAtAngle(theta));

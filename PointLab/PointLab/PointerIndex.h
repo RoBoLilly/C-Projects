@@ -15,7 +15,7 @@
 struct PointerIndex {
     sf::Texture* particalTexture;
     sf::RenderWindow* window;
-    LinkedList* particalList;
+    LinkedList<Partical>* particalList;
 };
 
 #endif /* PointerIndex_h */
