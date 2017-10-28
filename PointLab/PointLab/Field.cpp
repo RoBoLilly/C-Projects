@@ -35,13 +35,13 @@ void Field::bounderyCheck(Partical &partical)
     }
 }
 
-void Field::addAttraction(Partical &partical, LinkedList<Partical> &ll) {
+void Field::addAttraction(Partical &partical, LinkedList &ll) {
     const float deadZone = 0.25;
     Point2f d;
     Point2f a;
     int c = 0;
     bool happening = true;
-    for(Node<Partical>* n = ll.head; n != nullptr; n = n->next) {
+    for(Node* n = ll.head; n != nullptr; n = n->next) {
         if(partical.ID != n->data.ID){
             d.x = n->data.getPos().x - partical.getPos().x;
             d.y = n->data.getPos().y - partical.getPos().y;

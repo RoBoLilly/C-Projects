@@ -22,7 +22,9 @@ private:
     Point2f m_position;
     float m_radius;
 public:
+    Circal();
     Circal(PointerIndex &pI, Point2f position, float radius);
+    void setPointerIndex(PointerIndex &pI);
     void setPos(Point2f position);
     void setPos(float x, float y);
     void setRadius(float radius);

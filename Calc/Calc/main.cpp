@@ -21,7 +21,6 @@ struct dic {
     int data;
 } memo[128];
 
-
 int fib(int n) {
     int f;
     if ( memo[n].entered == true ) { return memo[n].data; }
@@ -30,21 +29,19 @@ int fib(int n) {
     memo[n].data = f;
     return f;
 }
-float PI = 3.14159;
-float hight(float x) {
-    return 400 - 16*(x*x);
-};
-float what(float x){
-    return 6*x + 70;
-}
-float parabola(float x) {
+double sqr(double x) {
     return x*x;
 }
-Function sqr(parabola);
-
-float func(float x) {
-    return hight(x);
+double hight(double x) {
+    return 0.1*(x*x) + 3*x;
 };
+double OilSlick(double x){
+    return pi*sqr(70+6*x);
+    //return PI*sqr(70+6*x);
+}
+double func(double x) {
+    return OilSlick(x);
+}
 
 int main(int argc, const char * argv[])
 {
@@ -54,18 +51,16 @@ int main(int argc, const char * argv[])
     window.setVerticalSyncEnabled(false);
     
     Grid grid(window);
-    Function function(func);
-    function(9.0);
     
-    float x = 0;
+    double x = 0;
     
     bool ha = true;
     while ( x <= 5 ) {
         cout << "X = " << x << endl;
-        cout << "X^2 = " << sqr(x) << endl;
+        //cout << "X^2 = " << sqr(x) << endl;
         cout << "Derivative: " << derivative(func, x, 0.0001) << endl;
-        cout << "Second Derivative: " << secondDerivative(func, x) << endl;
-        cout << "Y = " << function(x) << endl << endl;
+        //cout << "Second Derivative: " << secondDerivative(func, x) << endl;
+        cout << "Y = " << func(x) << endl << endl;
         ha = false;
         x = x + 1;
     }
@@ -90,8 +85,6 @@ int main(int argc, const char * argv[])
             }
         }
         window.clear( sf::Color::Black );
-        grid.clear();
-        grid.plot(func);
         grid.draw();
         window.display();
         // Loop

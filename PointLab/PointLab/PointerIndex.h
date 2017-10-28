@@ -12,10 +12,10 @@
 #include <SFML/Graphics.hpp>
 #include "LinkedList.hpp"
 
-struct PointerIndex {
+class PointerIndex {
+public:
     sf::Texture* particalTexture;
     sf::RenderWindow* window;
-    LinkedList<Partical>* particalList;
 };
 
 #endif /* PointerIndex_h */

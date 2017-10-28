@@ -44,7 +44,7 @@ public:
     void init(sf::Texture &texture);
     void iterate();
     void draw(sf::RenderWindow &window);
-    void makeBenjamins();
+    void makeBenjaminsColor();
 };
 
 #endif /* Partical_hpp */

@@ -52,11 +52,11 @@ void PixelBuffer::addPixel(Point2f point, sf::Color color){
 void PixelBuffer::clear(){
     for(int i=0; i<size.x; i++){
         for(int j=0; j<size.y; j++){
-            m_buffer[i][i].load = false;
-            m_buffer[i][i].r = 0;
-            m_buffer[i][i].g = 0;
-            m_buffer[i][i].b = 0;
-            m_buffer[i][i].a = 0;
+            m_buffer[i][j].load = false;
+            m_buffer[i][j].r = 0;
+            m_buffer[i][j].g = 0;
+            m_buffer[i][j].b = 0;
+            m_buffer[i][j].a = 0;
         }
     }
 }

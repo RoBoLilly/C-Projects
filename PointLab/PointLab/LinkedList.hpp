@@ -12,20 +12,18 @@
 #include <stdio.h>
 #include "Partical.hpp"
 
-template <typename type>
 struct Node {
     Node* next = nullptr;
     Node* prev = nullptr;
-    type data;
+    Partical data;
 };
 
-template <typename type>
 class LinkedList {
 private:
     int IDcounter;
 public:
-    Node<type>* head;
-    Node<type>* tail;
+    Node* head;
+    Node* tail;
     LinkedList(){
         head = nullptr;
         tail = nullptr;
@@ -34,9 +32,9 @@ public:
     template <typename T>
     void insertFront(T data)
     {
-        Node<type> *temp=new Node<type>;
-        temp->partical = data;
-        temp->partical.ID = IDcounter;
+        Node *temp=new Node;
+        temp->data = data;
+        temp->data.ID = IDcounter;
         IDcounter++;
         temp->prev = nullptr;
         if(tail == nullptr)
@@ -55,9 +53,9 @@ public:
     template <typename T>
     void insertBack(T data)
     {
-        Node<type> *temp=new Node<type>;
-        temp->partical = data;
-        temp->partical.ID = IDcounter;
+        Node *temp=new Node;
+        temp->data = data;
+        temp->data.ID = IDcounter;
         IDcounter++;
         temp->next = nullptr;
         if(head == nullptr)
@@ -74,14 +72,14 @@ public:
     };
     void deleteFront()
     {
-        Node<type> *temp=new Node<type>;
+        Node *temp=new Node;
         temp=head;
         head=head->next;
         delete temp;
     }
     void deleteBack()
     {
-        Node<type> *temp=new Node<type>;
+        Node *temp=new Node;
         temp=tail;
         tail=tail->next;
         delete temp;

@@ -20,7 +20,7 @@ private:
 public:
     Field(Point2f size);
     void bounderyCheck(Partical &partical);
-    void addAttraction(Partical &partical, LinkedList<Partical> &ll);
+    void addAttraction(Partical &partical, LinkedList &ll);
 };
 
 #endif /* Field_hpp */

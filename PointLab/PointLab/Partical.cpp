@@ -8,6 +8,7 @@
 
 #include "Partical.hpp"
 #include "Point2f.hpp"
+#include <SFML/Graphics.hpp>
 
 Partical::Partical(){};
 Partical::Partical(sf::Texture &texture, Point2f pos)
@@ -22,7 +23,7 @@ Partical::Partical(sf::Texture &texture, Point2f pos, Point2f moment)
     init(texture);
 }
 void Partical::init(sf::Texture &texture) {
-    setTexture(texture);
+    m_texture = &texture;
     pointSprite.setTexture(*m_texture);
     pointSprite.setTextureRect(sf::IntRect(58, 58, 14, 14));
     pointSprite.setOrigin(7, 7);
@@ -89,7 +90,7 @@ void Partical::draw(sf::RenderWindow &window)
     //window.draw(attractiveSprite);
     window.draw(pointSprite);
 }
-void Partical::makeBenjamins()
+void Partical::makeBenjaminsColor()
 {
     pointSprite.setColor(sf::Color::Blue);
 }
